@@ -79,18 +79,18 @@ Os principais objetivos do projeto são:
 
 ### Configuração do Ambiente
 
-Para obter mais informações sobre o projeto, clique no [**link**](https://www.notion.so/858405bdb0df40438313d8272820b13d?pvs=21) a seguir.
+Para obter mais informações sobre o projeto, clique no [**link**](https://github.com/AdeniltonR/Detector-Dracco/tree/main/Config-ambiente) a seguir.
 
-![orange-pi-os.png](docs/orange-pi-os.png)
+![orange-pi-os.png](Docs/orange-pi-os.png)
 
 ### Orange Pi
 
-Para obter mais informações sobre o projeto do Software, clique no [**link**](https://www.notion.so/6ea0be6a32d740a7b0d105603ac26668?pvs=21) a seguir.
+Para obter mais informações sobre o projeto do Software, clique no [**link**](https://github.com/AdeniltonR/Detector-Dracco/tree/main/Software) a seguir.
 
 `[Adicionar uma foto ou Gif]`
 
 ### ESP32-CAM
 
-Para obter mais informações sobre o projeto do Software, clique no [**link**](https://www.notion.so/103cbcaa7ba9801bae56f218dd0cfadc?pvs=21) a seguir.
+Para obter mais informações sobre o projeto do Software, clique no [**link**]() a seguir.
 
 `[Adicionar uma foto ou Gif]`

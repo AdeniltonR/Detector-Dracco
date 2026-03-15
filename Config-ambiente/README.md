@@ -14,6 +14,8 @@
     - [Instalação BalenaEtcher](#Iinstalação-balenaEtcher)
     - [Instalação Imagem Orange Pi](#instalação-imagem-orange-pi)
     - [Configurando SSH para acessar via rede](#configurando-ssh-para-acessar-via-rede)
+- [Passos para Habilitar o Autocompletar](#passos-para-habilitar-o-autocompletar)
+    - [Verifique o Funcionamento](#verifique-o-funcionamento)
 - [Informações](#informações)
 
 ## Histórico de Versão
@@ -58,7 +60,7 @@ Para baixar imagem 📥  [**`Orange Pi Zero 3`**](http://www.orangepi.org/html/h
 
 ![Imagens.png](Docs/Imagens.png)
 
-### Configurando SSH para acessar via rede:
+### Configurando SSH para acessar via rede
 
 Conecte no wi-fi do Orange Pi, depois abilite SSH, em seguida digite comando abaixo para achar IP:
 
@@ -103,6 +105,46 @@ Para conectar via ssh no vscode na sua máquina, na extensões do vscode baixe `
 Configure seu ssh:
 
 ![ssh_2.png](Docs/ssh_2.png)
+
+## Passos para Habilitar o Autocompletar:
+
+Para habilitar o recurso de autocompletar comandos usando a tecla **Tab** no terminal do Orange Pi Zero via SSH, você deve garantir que o pacote `bash-completion` esteja instalado e ativado. Esse pacote fornece as regras necessárias para o autocompletar funcionar.
+
+1. **Instale o pacote `bash-completion`**:
+    
+    No terminal do Orange Pi Zero, execute o comando abaixo para instalar o pacote:
+    
+    ```bash
+    sudo apt update
+    sudo apt install bash-completion -y
+    ```
+    
+2. **Ative o `bash-completion` no seu shell**:
+    
+    Após a instalação, adicione o suporte ao `bash-completion` ao arquivo de configuração do shell (`.bashrc`). Execute o comando abaixo para editar o arquivo:
+    
+    ```bash
+    vi ~/.bashrc
+    ```
+    
+    Adicione a seguinte linha ao final do arquivo:
+    
+    ```bash
+    source /etc/bash_completion
+    ```
+    
+3. **Recarregue o arquivo de configuração do shell**:
+    
+    Para aplicar as alterações, recarregue o arquivo `.bashrc` com o seguinte comando:
+    
+    ```bash
+    source ~/.bashrc
+    ```
+    
+
+### Verifique o Funcionamento
+
+Agora, o recurso de autocompletar deve estar funcionando no seu terminal. Tente digitar parte de um comando e pressione a tecla **Tab** para ver o autocompletar em ação.
 
 ## Informações
 
