@@ -1,52 +1,48 @@
-# Prerequisites
-*.d
+# ========================
+# ESP-IDF
+build/
+sdkconfig
+sdkconfig.old
+managed_components/
 
-# Object files
+# ========================
+# VS Code
+.vscode/
+
+# ========================
+# Arquivos de compilação
+*.d
 *.o
-*.ko
 *.obj
 *.elf
 
-# Linker output
-*.ilk
+# ========================
+# Linker
 *.map
 *.exp
+*.ilk
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
+# ========================
+# Bibliotecas
 *.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
+*.lib
 *.so
-*.so.*
+*.dll
 *.dylib
 
-# Executables
+# ========================
+# Executáveis
 *.exe
 *.out
-*.app
-*.i*86
-*.x86_64
-*.hex
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
+# ========================
+# Debug
 *.pdb
+*.idb
+*.su
+*.dSYM/
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# ========================
+# Sistema
+.DS_Store
+Thumbs.db
