@@ -1,3 +1,20 @@
+/*
+ * NOME: Adenilton Ribeiro
+ * DATA: 19/03/2026
+ * PROJETO: Camera Pins
+ * VERSAO: 1.0.0
+ * DESCRICAO:
+ *  - feat: Inicialização e configuração do sensor de câmera (OV2640).
+ * LINKS:
+ *  - ESP-IDF: https://docs.espressif.com/projects/esp-idf/en/v5.4/
+ *  - Driver câmera: https://github.com/espressif/esp32-camera
+*/
+
+// ========================================================================================================
+/**
+ * @brief camera_pins.h
+ * 
+*/
 #ifndef CAMERA_PINS_H_
 #define CAMERA_PINS_H_
 
@@ -90,4 +107,4 @@
 #define PCLK_GPIO_NUM     21
 #endif
 
-#endif
+#endif //camera_pins.h

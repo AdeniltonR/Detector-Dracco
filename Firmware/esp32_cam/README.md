@@ -9,9 +9,16 @@
 - [Histórico de Versão](#histórico-de-versão)
 - [Resumo](#resumo)
 - [Objetivo](#objetivo)
+- [Fluxograma](#fluxograma)
+- [Configuração do Ambiente de Desenvolvimento](#configuração-do-ambiente-de-desenvolvimento)
 - [Links para estudos](#links-para-estudos)
 - [Pinos do projeto eletrônico](#pinos-do-projeto-eletrônico)
-- [Bibliotecas](#bibliotecas)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Configuração via Menuconfig](#configuração-via-menuconfig)
+- [Funcionamento do Firmware](#funcionamento-do-firmware)
+- [Inicialização esperada](#inicialização-esperada)
+- [Observações Técnicas](#observações-técnicas)
+- [Possíveis Melhorias Futuras](#possíveis-melhorias-futuras)
 - [Informações](#informações)
 
 ## Histórico de versão
@@ -43,6 +50,149 @@ O firmware foi desenvolvido com FreeRTOS, garantindo execução eficiente e cont
 - Disponibilizar stream de vídeo via HTTP
 - Criar base reutilizável para aplicações embarcadas com visão
 
+## Fluxograma
+
+![mermaid-diagram.png](Docs/mermaid-diagram.png)
+
+## Configuração do Ambiente de Desenvolvimento
+
+Este guia descreve os passos necessários para configurar o ambiente e executar o firmware do **ESP32-CAM** utilizando **ESP-IDF v5.4.0**
+
+### Clonar o repositório
+
+```
+git clone https://github.com/AdeniltonR/Detector-Dracco.git
+cd Firmware/esp32_cam
+```
+
+### Abrir no VS Code
+
+1. Abra o **VS Code**
+2. Clique em:
+    - `File → Open Folder`
+3. Selecione a pasta do projeto
+
+### Configurar o ambiente ESP-IDF
+
+Certifique-se de que a extensão **ESP-IDF** está instalada no VS Code.
+
+Caso não esteja:
+
+- Instale a extensão **Espressif IDF**
+
+### Configurar o projeto (menuconfig)
+
+Abra o terminal e execute:
+
+```
+idf.py menuconfig
+```
+
+### Ajustes obrigatórios
+
+#### Flash
+
+```
+Serial flasher config → Flash size → 4 MB
+```
+
+#### Frequência
+
+```
+Serial flasher config → Flash frequency → 80 MHz
+```
+
+#### PSRAM
+
+```
+Component config → ESP32-specific → Support for external RAM → ENABLE
+```
+
+### Configurar Wi-Fi
+
+```
+Configuração da Aplicação → Configuração do Wi-Fi
+```
+
+Preencha:
+
+- SSID da rede
+- Senha do Wi-Fi
+- Número máximo de tentativas
+
+### Configurar IP (opcional - recomendado)
+
+```
+Configuração da Aplicação → Configuração de Rede
+```
+
+Defina:
+
+- IP fixo (ex: 192.168.15.30)
+- Gateway (ex: 192.168.15.1)
+- Máscara (ex: 255.255.255.0)
+
+### Selecionar modelo da câmera
+
+```
+Configuração da Aplicação → Seleção da placa
+```
+
+Selecione:
+
+```
+AiThinker ESP32-CAM
+```
+
+### Instalar dependências
+
+O projeto utiliza o driver oficial da câmera:
+
+```
+espressif/esp32-camera
+```
+
+A instalação é automática ao compilar o projeto.
+
+### Compilar o projeto
+
+```
+idf.py build
+```
+
+### Gravar no ESP32
+
+```
+idf.py flash
+```
+
+### Monitor serial
+
+```
+idf.py monitor
+```
+
+### Acessar a câmera
+
+Após inicialização, acesse no navegador:
+
+```
+http://IP_DO_ESP32
+```
+
+Exemplo:
+
+```
+http://192.168.15.30
+```
+
+### Observações Importantes
+
+- Utilize **Flash 4MB**, caso contrário ocorrerá erro de boot
+- PSRAM é necessária para melhor desempenho da câmera
+- Wi-Fi deve estar na mesma rede do computador
+- Logs como `wifi:<ba-add>` são normais
+
 ## Links para estudos
 
 [**Documentação ESP-IDF**](https://docs.espressif.com/projects/esp-idf/en/v5.4.0/esp32s3/index.html)
@@ -54,11 +204,11 @@ O firmware foi desenvolvido com FreeRTOS, garantindo execução eficiente e cont
 ## Pinos do projeto eletrônico
 
 | **Pino** | **Conexão** | **Tipo** | **Descrição** |
-|----------|-------------|----------|---------------|
-| GPIO16   | TX (UART)   | UART     | Transmissão   |
-| GPIO15   | RX (UART)   | UART     | Recepção      |
+| --- | --- | --- | --- |
+| GPIO1 | TX (UART) | UART | Transmissão |
+| GPIO3 | RX (UART) | UART | Recepção |
 
-## Bibliotecas
+![ESP32-CAM.png](Docs/ESP32-CAM.png)
 
 ## Estrutura do Projeto
 
@@ -68,35 +218,35 @@ main/
 ├── connect_wifi.c# Gerenciamento da conexão Wi-Fi
 ├── connect_wifi.h
 ├── camera_pins.h# Definição dos pinos da câmera
-├── Kconfig.projbuild# Configurações via menuconfig
+└── Kconfig.projbuild# Configurações via menuconfig
 ```
 
 ## Configuração via Menuconfig
 
 O projeto utiliza o sistema nativo do ESP-IDF para configuração.
 
-## Acessar menuconfig
+### Acessar menuconfig
 
 ```
 idf.py menuconfig
 ```
 
-## Parâmetros configuráveis
+### Parâmetros configuráveis
 
-### Wi-Fi
+#### Wi-Fi
 
 - SSID da rede
 - Senha
 - Número máximo de tentativas
 
-### Rede
+#### Rede
 
 - Ativar IP fixo
 - Endereço IP
 - Gateway
 - Máscara de rede
 
-### Hardware
+#### Hardware
 
 - Seleção do modelo da placa (ESP32-CAM)
 
@@ -125,27 +275,13 @@ O fluxo de execução do sistema segue a seguinte sequência:
 - Envia stream multipart (`multipart/x-mixed-replace`)
 - Navegador exibe como vídeo em tempo real
 
-## Inicialização esperada (log)
+## Inicialização esperada
 
 ```
 Wi-Fi conectado!
 IP obtido: 192.168.X.X
 Câmera inicializada com sucesso
 Servidor HTTP iniciado
-```
-
-## Acesso ao Stream
-
-Após iniciar o firmware:
-
-```
-http://IP_DO_ESP32
-```
-
-Exemplo:
-
-```
-http://192.168.15.30
 ```
 
 ## Observações Técnicas

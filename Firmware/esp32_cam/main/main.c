@@ -1,8 +1,29 @@
+/*
+ * NOME: Adenilton Ribeiro
+ * DATA: 19/03/2026
+ * PROJETO: ESP32-CAM Web Server
+ * VERSAO: 1.0.0
+ * DESCRICAO:
+ *  - feat: Implementação de câmera IP utilizando ESP32-CAM com stream MJPEG via HTTP.
+ *  - feat: Conexão Wi-Fi com suporte a DHCP ou IP fixo configurável via menuconfig.
+ *  - feat: Inicialização e configuração do sensor de câmera (OV2640).
+ *  - feat: Servidor HTTP embarcado para transmissão de vídeo em tempo real.
+ *  - feat: Suporte a configuração de parâmetros via menuconfig (Wi-Fi, rede, placa).
+ *  - docs: Firmware desenvolvido utilizando ESP-IDF v5.4 com FreeRTOS.
+ * LINKS:
+ *  - ESP-IDF: https://docs.espressif.com/projects/esp-idf/en/v5.4/
+ *  - Driver câmera: https://github.com/espressif/esp32-camera
+*/
+
+// ========================================================================================================
+// ---BIBLIOTECA---
+
 #include <esp_system.h>
 #include <nvs_flash.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
+#include "esp_netif.h"
 
 #include "esp_camera.h"
 #include "esp_http_server.h"
@@ -10,7 +31,11 @@
 #include "camera_pins.h"
 #include "connect_wifi.h"
 
-static const char *TAG = "esp32-cam Webserver";
+// ========================================================================================================
+//---VARIAVEIS GLOBAIS---
+
+/// @brief Tag para identificação dos logs deste módulo (main)
+static const char *TAG = "main";
 
 // Definições para stream MJPEG
 #define PART_BOUNDARY "123456789000000000000987654321"
@@ -21,6 +46,7 @@ static const char* _STREAM_PART = "Content-Type: image/jpeg\r\nContent-Length: %
 // Frequência do clock da câmera
 #define CONFIG_XCLK_FREQ 20000000 
 
+// ========================================================================================================
 /**
  * @brief Inicializa a câmera
  * @note Certifique-se de configurar os pinos corretamente no arquivo "camera_pins.h" para o seu modelo de câmera específico.
@@ -69,14 +95,15 @@ static esp_err_t init_camera(void) {
 
     esp_err_t err = esp_camera_init(&camera_config);
     if (err != ESP_OK) {
-        ESP_LOGE(TAG, "Erro ao inicializar a câmera");
+        ESP_LOGE(TAG, "❌  Erro ao inicializar a câmera");
         return err;
     }
 
-    ESP_LOGI(TAG, "Câmera inicializada com sucesso");
+    ESP_LOGI(TAG, "✅ Câmera inicializada com sucesso...");
     return ESP_OK;
 }
 
+// ========================================================================================================
 /**
  * @brief Handler para o stream MJPEG
  * @param req Ponteiro para a requisição HTTP
@@ -107,7 +134,7 @@ esp_err_t jpg_stream_httpd_handler(httpd_req_t *req) {
         // Captura frame da câmera
         fb = esp_camera_fb_get();
         if (!fb) {
-            ESP_LOGE(TAG, "Falha ao capturar imagem da câmera");
+            ESP_LOGE(TAG, "❌  Falha ao capturar imagem da câmera");
             res = ESP_FAIL;
             break;
         }
@@ -117,7 +144,7 @@ esp_err_t jpg_stream_httpd_handler(httpd_req_t *req) {
             bool jpeg_converted = frame2jpg(fb, 80, &_jpg_buf, &_jpg_buf_len);
 
             if(!jpeg_converted) {
-                ESP_LOGE(TAG, "Falha na compressão JPEG");
+                ESP_LOGE(TAG, "❌  Falha na compressão JPEG");
                 esp_camera_fb_return(fb);
                 res = ESP_FAIL;
             }
@@ -170,6 +197,7 @@ esp_err_t jpg_stream_httpd_handler(httpd_req_t *req) {
     return res;
 }
 
+// ========================================================================================================
 /**
  * @brief Configura e inicia o servidor HTTP para streaming MJPEG
  * 
@@ -180,6 +208,7 @@ httpd_uri_t uri_get = {
     .handler = jpg_stream_httpd_handler,
     .user_ctx = NULL};
 
+// ========================================================================================================
 /**
  * @brief Configura e inicia o servidor HTTP
  */
@@ -189,14 +218,15 @@ httpd_handle_t setup_server(void) {
 
     if (httpd_start(&stream_httpd , &config) == ESP_OK) {
         httpd_register_uri_handler(stream_httpd , &uri_get);
-        ESP_LOGI(TAG, "Servidor HTTP iniciado");
+        ESP_LOGI(TAG, "✅ Servidor HTTP iniciado...");
     } else {
-        ESP_LOGE(TAG, "Erro ao iniciar servidor HTTP");
+        ESP_LOGE(TAG, "❌  Erro ao iniciar servidor HTTP");
     }
 
     return stream_httpd;
 }
 
+// ========================================================================================================
 /**
  * @brief Função principal do aplicativo
  */
@@ -215,21 +245,28 @@ void app_main() {
     connect_wifi();
 
     if (wifi_connect_status) {
-        ESP_LOGI(TAG, "Wi-Fi conectado com sucesso");
+        ESP_LOGI(TAG, "📶  Wi-Fi conectado com sucesso...");
 
         // Inicializa câmera
         err = init_camera();
         if (err != ESP_OK) {
-            printf("Falha na inicialização da câmera: %s\n", esp_err_to_name(err));
+            ESP_LOGE(TAG, "❌  Falha na inicialização da câmera: %s", esp_err_to_name(err));
             return;
         }
 
         // Inicia servidor
         setup_server();
         
-        ESP_LOGI(TAG, "Servidor da câmera iniciado com sucesso");
-        ESP_LOGI(TAG, "Acesse via navegador: http://IP_DO_ESP32/");
+        ESP_LOGI(TAG, "🌐  Servidor da câmera iniciado com sucesso...");
+        esp_netif_ip_info_t ip_info;
+        esp_netif_t *netif = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
+
+        if (netif != NULL) {
+            esp_netif_get_ip_info(netif, &ip_info);
+
+            ESP_LOGI(TAG, "🌐  Acesse via navegador: http://" IPSTR, IP2STR(&ip_info.ip));
+        }
     } else {
-        ESP_LOGE(TAG, "Falha ao conectar no Wi-Fi. Verifique SSID e senha.");
+        ESP_LOGE(TAG, "❌  Falha ao conectar no Wi-Fi. Verifique SSID e senha.");
     }
 }

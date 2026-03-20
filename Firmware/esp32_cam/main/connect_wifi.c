@@ -1,8 +1,27 @@
+/*
+ * NOME: Adenilton Ribeiro
+ * DATA: 19/03/2026
+ * PROJETO: WIFI
+ * VERSAO: 1.0.0
+ * DESCRICAO:
+ *  - feat: Conexão Wi-Fi com suporte a DHCP ou IP fixo configurável via menuconfig.
+ * LINKS:
+ *  - ESP-IDF: https://docs.espressif.com/projects/esp-idf/en/v5.4/
+ *  - Driver câmera: https://github.com/espressif/esp32-camera
+*/
+
+// ========================================================================================================
+// ---BIBLIOTECA---
+
 #include "connect_wifi.h"
+
+// ========================================================================================================
+//---VARIAVEIS GLOBAIS---
 
 // Status da conexão Wi-Fi (0 = desconectado, 1 = conectado)
 int wifi_connect_status = 0;
 
+/// @brief Tag para identificação dos logs deste módulo (WiFi)
 static const char *TAG = "WiFi";
 
 // Contador de tentativas de conexão
@@ -27,6 +46,7 @@ EventGroupHandle_t s_wifi_event_group;
 #define WIFI_CONNECTED_BIT BIT0
 #define WIFI_FAIL_BIT BIT1
 
+// ========================================================================================================
 /**
  * @brief Handler para eventos de Wi-Fi e IP
  * @param arg Argumento do evento (não utilizado)
@@ -39,7 +59,7 @@ static void event_handler(void *arg, esp_event_base_t event_base,
 {
     // Evento: Wi-Fi iniciado → tenta conectar
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
-        ESP_LOGI(TAG, "Iniciando conexão com Wi-Fi...");
+        ESP_LOGI(TAG, "✅ Iniciando conexão com Wi-Fi...");
         esp_wifi_connect();
 
     // Evento: desconectado
@@ -47,19 +67,19 @@ static void event_handler(void *arg, esp_event_base_t event_base,
         if (s_retry_num < MAXIMUM_RETRY) {
             esp_wifi_connect();
             s_retry_num++;
-            ESP_LOGW(TAG, "Tentando reconectar... (%d/%d)", s_retry_num, MAXIMUM_RETRY);
+            ESP_LOGW(TAG, "🔄 Tentando reconectar... (%d/%d)", s_retry_num, MAXIMUM_RETRY);
         } else {
             // Falha após várias tentativas
             xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
         }
         wifi_connect_status = 0;
-        ESP_LOGE(TAG, "Falha na conexão com o Wi-Fi");
+        ESP_LOGE(TAG, "❌  Falha na conexão com o Wi-Fi");
 
     // Evento: IP obtido com sucesso
     } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
 
-        ESP_LOGI(TAG, "Wi-Fi conectado! IP obtido: " IPSTR, IP2STR(&event->ip_info.ip));
+        ESP_LOGI(TAG, "📶  Wi-Fi conectado! IP obtido: " IPSTR, IP2STR(&event->ip_info.ip));
 
         s_retry_num = 0;
         xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
@@ -67,6 +87,7 @@ static void event_handler(void *arg, esp_event_base_t event_base,
     }
 }
 
+// ========================================================================================================
 /**
  * @brief Configura e inicia a conexão Wi-Fi
  */
@@ -145,7 +166,7 @@ void connect_wifi(void) {
     // Inicia Wi-Fi
     ESP_ERROR_CHECK(esp_wifi_start());
 
-    ESP_LOGI(TAG, "Wi-Fi inicializado, tentando conectar...");
+    ESP_LOGI(TAG, "🔄 Wi-Fi inicializado, tentando conectar...");
 
     /* Aguarda até que a conexão seja estabelecida (WIFI_CONNECTED_BIT) ou que a conexão falhe pelo número máximo de tentativas
      * tentativas (WIFI_FAIL_BIT). Os bits são definidos por event_handler() (veja acima) */
@@ -159,11 +180,11 @@ void connect_wifi(void) {
      * ocorreu. */
      // Verifica resultado
     if (bits & WIFI_CONNECTED_BIT) {
-        ESP_LOGI(TAG, "Conectado com sucesso ao Wi-Fi: %s", WIFI_SSID);
+        ESP_LOGI(TAG, "📶  Conectado com sucesso ao Wi-Fi: %s", WIFI_SSID);
     } else if (bits & WIFI_FAIL_BIT) {
-        ESP_LOGE(TAG, "Falha ao conectar no Wi-Fi: %s", WIFI_SSID);
+        ESP_LOGE(TAG, "❌  Falha ao conectar no Wi-Fi: %s", WIFI_SSID);
     } else {
-        ESP_LOGE(TAG, "Evento inesperado durante conexão Wi-Fi");
+        ESP_LOGE(TAG, "❌  Evento inesperado durante conexão Wi-Fi");
     }
 
     // Libera grupo de eventos

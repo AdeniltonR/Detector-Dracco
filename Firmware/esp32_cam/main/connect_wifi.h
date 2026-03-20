@@ -1,5 +1,25 @@
+/*
+ * NOME: Adenilton Ribeiro
+ * DATA: 19/03/2026
+ * PROJETO: WIFI
+ * VERSAO: 1.0.0
+ * DESCRICAO:
+ *  - feat: Conexão Wi-Fi com suporte a DHCP ou IP fixo configurável via menuconfig.
+ * LINKS:
+ *  - ESP-IDF: https://docs.espressif.com/projects/esp-idf/en/v5.4/
+ *  - Driver câmera: https://github.com/espressif/esp32-camera
+*/
+
+// ========================================================================================================
+/**
+ * @brief connect_wifi.h
+ * 
+*/
 #ifndef CONNECT_WIFI_H_
 #define CONNECT_WIFI_H_
+
+// ========================================================================================================
+// ---BIBLIOTECA---
 
 #include <esp_system.h>
 #include <nvs_flash.h>
@@ -17,8 +37,14 @@
 #include <lwip/api.h>
 #include <lwip/netdb.h>
 
+// ========================================================================================================
+//---VARIAVEIS GLOBAIS EXTERNAS---
+
 extern int wifi_connect_status;
+
+// ========================================================================================================
+//---PROTOTIPO DA FUNCAO---
 
 void connect_wifi(void);
 
-#endif
+#endif //connect_wifi.h
