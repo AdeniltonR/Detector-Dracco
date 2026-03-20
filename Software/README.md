@@ -93,29 +93,33 @@ dracco-detector/
 ├── main.py                      # Inicialização do sistema
 │
 ├── src/                         # Módulos principais (como pacotes Python)
-│		├── camera/                  # Captura do stream da ESP32-CAM
-│		│		├── __init__.py
-│		│   └── camera_stream.py
-│		│
-│		├── detection/               # Algoritmo de visão computacional
-│		│		├── __init__.py
-│		│   └── object_detection.py
-│		│
-│		├── notifications/           # Integração com Telegram e Alexa
-│		│		├── __init__.py
-│		│   ├── telegram.py
-│		│   └── alexa.py
-│		│
-│		└── web/                     # Interface web Flask
-│				├── __init__.py
-│		    ├── app.py
-│		    ├── templates/
-│				│		├── homepage.html
-│				│		├── index.html
-│				│   └── ...
-│		    └── static/
-│						├── imagens.png
-│						└── ...
+│   ├── camera/                  # Captura do stream da ESP32-CAM
+│   │   ├── __init__.py
+│   │   └── camera_stream.py
+│   │
+│   ├── detection/               # Algoritmo de visão computacional
+│   │   ├── __init__.py
+│   │   └── object_detection.py
+│   │
+│   ├── notifications/           # Integração com Telegram e Alexa
+│   │   ├── __init__.py
+│   │   ├── telegram.py
+│   │   └── alexa.py
+│   │
+│   ├── web/                     # Interface web Flask
+│   │   ├── __init__.py
+│   │   ├── app.py
+│   │   ├── templates/
+│   │   │   ├── homepage.html
+│   │   │   ├── index.html
+│   │   │   └── ...
+│   │   └── static/
+│   │       ├── imagens.png
+│   │       └── ...
+│   │
+│   └── utils/                   # Funções auxiliares (log, timestamp, etc.)
+│       ├── __init__.py
+│       └── helpers.py
 │
 ├── config/                      # Arquivos de configuração
 │   └── config.yaml
@@ -125,7 +129,7 @@ dracco-detector/
 ├── models/                      # Modelos de IA utilizados no sistema
 │
 └── scripts/                     # Scripts auxiliares (testes, ferramentas)
-		└── cam.py
+    └── cam.py
 ```
 
 ## Links de Estudo
@@ -290,29 +294,33 @@ dracco-detector/
 ├── main.py                      # Inicialização do sistema
 │
 ├── src/                         # Módulos principais (como pacotes Python)
-│		├── camera/                  # Captura do stream da ESP32-CAM
-│		│		├── __init__.py
-│		│   └── camera_stream.py
-│		│
-│		├── detection/               # Algoritmo de visão computacional
-│		│		├── __init__.py
-│		│   └── object_detection.py
-│		│
-│		├── notifications/           # Integração com Telegram e Alexa
-│		│		├── __init__.py
-│		│   ├── telegram.py
-│		│   └── alexa.py
-│		│
-│		└── web/                     # Interface web Flask
-│				├── __init__.py
-│		    ├── app.py
-│		    ├── templates/
-│				│		├── homepage.html
-│				│		├── index.html
-│				│   └── ...
-│		    └── static/
-│						├── imagens.png
-│						└── ...
+│   ├── camera/                  # Captura do stream da ESP32-CAM
+│   │   ├── __init__.py
+│   │   └── camera_stream.py
+│   │
+│   ├── detection/               # Algoritmo de visão computacional
+│   │   ├── __init__.py
+│   │   └── object_detection.py
+│   │
+│   ├── notifications/           # Integração com Telegram e Alexa
+│   │   ├── __init__.py
+│   │   ├── telegram.py
+│   │   └── alexa.py
+│   │
+│   ├── web/                     # Interface web Flask
+│   │   ├── __init__.py
+│   │   ├── app.py
+│   │   ├── templates/
+│   │   │   ├── homepage.html
+│   │   │   ├── index.html
+│   │   │   └── ...
+│   │   └── static/
+│   │       ├── imagens.png
+│   │       └── ...
+│   │
+│   └── utils/                   # Funções auxiliares (log, timestamp, etc.)
+│       ├── __init__.py
+│       └── helpers.py
 │
 ├── config/                      # Arquivos de configuração
 │   └── config.yaml
@@ -322,7 +330,7 @@ dracco-detector/
 ├── models/                      # Modelos de IA utilizados no sistema
 │
 └── scripts/                     # Scripts auxiliares (testes, ferramentas)
-		└── cam.py
+    └── cam.py
 ```
 
 ## Explicação dos módulos eletrônico
