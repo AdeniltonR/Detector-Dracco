@@ -88,29 +88,44 @@ Aqui está uma visão geral da estrutura básica do projeto:
 ```
 dracco-detector/
 │
-├── main.py                # Inicialização do sistema
+├── README.md                    # Descrição do projeto e instruções de uso
+├── requirements.txt             # Dependências do projeto (pyserial, etc.)
+├── main.py                      # Inicialização do sistema
 │
-├── camera/                # Captura do stream da ESP32-CAM
-│   └── camera_stream.py
+├── src/                         # Módulos principais (como pacotes Python)
+│		├── camera/                  # Captura do stream da ESP32-CAM
+│		│		├── __init__.py
+│		│   └── camera_stream.py
+│		│
+│		├── detection/               # Algoritmo de visão computacional
+│		│		├── __init__.py
+│		│   └── object_detection.py
+│		│
+│		├── notifications/           # Integração com Telegram e Alexa
+│		│		├── __init__.py
+│		│   ├── telegram.py
+│		│   └── alexa.py
+│		│
+│		└── web/                     # Interface web Flask
+│				├── __init__.py
+│		    ├── app.py
+│		    ├── templates/
+│				│		├── homepage.html
+│				│		├── index.html
+│				│   └── ...
+│		    └── static/
+│						├── imagens.png
+│						└── ...
 │
-├── detection/             # Algoritmo de visão computacional
-│   └── object_detection.py
-│
-├── notifications/         # Integração com Telegram e Alexa
-│   ├── telegram.py
-│   └── alexa.py
-│
-├── web/                   # Interface web Flask
-│   ├── app.py
-│   ├── templates/
-│   └── static/
-│
-├── config/                # Arquivos de configuração
+├── config/                      # Arquivos de configuração
 │   └── config.yaml
 │
-├── logs/                  # Registro de eventos do sistema
+├── logs/                        # Registro de eventos do sistema
 │
-└── models/                # Modelos de IA utilizados no sistema
+├── models/                      # Modelos de IA utilizados no sistema
+│
+└── scripts/                     # Scripts auxiliares (testes, ferramentas)
+		└── cam.py
 ```
 
 ## Links de Estudo
@@ -156,17 +171,159 @@ sudo apt install python3 python3-venv
 
 ### Crie um Ambiente Virtual
 
+1. Abra um Terminal no Orange Pi**.**
+2. Navegue até sua pasta para clonar o projeto:
+    
+    ```basic
+    cd Documents/Projetos/
+    ```
+    
+3. Clone o repositorio:
+    
+    ```basic
+    git clone https://github.com/AdeniltonR/Detector-Dracco.git
+    ```
+    
+4. Navegue até a pasta Software:
+    
+    ```basic
+    cd Detector-Dracco/Software
+    ```
+    
+5. **Execute o Comando para Criar o Ambiente Virtual:**
+    - Substitua `nome_do_seu_ambiente` pelo nome desejado para o seu ambiente virtual, nome do meu ambiente é `dracco`.
+    
+    ```bash
+    python3 -m venv dracco
+    ```
+    
+    Isso criará uma pasta chamada `nome_do_seu_ambiente` contendo o ambiente virtual.
+    
+
 ### Ative o Ambiente Virtual
+
+Para ativar o ambiente virtual, execute o comando apropriado para o seu sistema:
+
+```bash
+source dracco/bin/activate
+```
+
+Após a ativação, você verá o nome do ambiente virtual aparecer no prompt do terminal, indicando que você está trabalhando dentro do ambiente virtual.
 
 ### Instale Pacotes
 
+Com o ambiente virtual ativado, você pode instalar pacotes usando `pip`. Por exemplo:
+
+```bash
+pip install nome_do_pacote
+```
+
 ### Desative o Ambiente Virtual
+
+Para desativar o ambiente virtual e retornar ao ambiente global do Python, execute:
+
+```bash
+deactivate
+```
 
 ### Remover o Ambiente Virtual
 
+Se você precisar excluir o ambiente virtual, basta remover a pasta que foi criada. No exemplo acima, você pode excluir a pasta `nome_do_seu_ambiente`:
+
+```bash
+rm -rf nome_do_seu_ambiente
+```
+
 ### Notas Adicionais
 
+- **Gerenciamento de Pacotes:**
+    - Use `pip list` para listar pacotes instalados e `pip freeze` para gerar um arquivo `requirements.txt` com as dependências do projeto.
+- **Arquivo `requirements.txt`:**
+    - Para gerar um arquivo `requirements.txt`, execute:
+        
+        ```bash
+        pip freeze > requirements.txt
+        ```
+        
+    - Para instalar pacotes a partir de um `requirements.txt`, use:
+        
+        ```bash
+        pip install -r requirements.txt
+        ```
+        
+
+Para ativar o ambiente virtual, execute o comando apropriado para o seu sistema:
+
+```bash
+source dracco/bin/activate
+```
+
+Para desativar o ambiente virtual e retornar ao ambiente global do Python, execute:
+
+```bash
+deactivate
+```
+
 ### Pacotes Python
+
+[Flask](https://flask.palletsprojects.com/en/3.0.x/), v3.0.3
+
+```bash
+pip install Flask
+```
+
+[OpenCV](https://pypi.org/project/opencv-python/), v4.10.0.84
+
+```bash
+pip install opencv-python
+```
+
+## Estrutura de pasta e arquivos
+
+Aqui está uma visão geral da estrutura básica do projeto:
+
+```
+dracco-detector/
+│
+├── README.md                    # Descrição do projeto e instruções de uso
+├── requirements.txt             # Dependências do projeto (pyserial, etc.)
+├── main.py                      # Inicialização do sistema
+│
+├── src/                         # Módulos principais (como pacotes Python)
+│		├── camera/                  # Captura do stream da ESP32-CAM
+│		│		├── __init__.py
+│		│   └── camera_stream.py
+│		│
+│		├── detection/               # Algoritmo de visão computacional
+│		│		├── __init__.py
+│		│   └── object_detection.py
+│		│
+│		├── notifications/           # Integração com Telegram e Alexa
+│		│		├── __init__.py
+│		│   ├── telegram.py
+│		│   └── alexa.py
+│		│
+│		└── web/                     # Interface web Flask
+│				├── __init__.py
+│		    ├── app.py
+│		    ├── templates/
+│				│		├── homepage.html
+│				│		├── index.html
+│				│   └── ...
+│		    └── static/
+│						├── imagens.png
+│						└── ...
+│
+├── config/                      # Arquivos de configuração
+│   └── config.yaml
+│
+├── logs/                        # Registro de eventos do sistema
+│
+├── models/                      # Modelos de IA utilizados no sistema
+│
+└── scripts/                     # Scripts auxiliares (testes, ferramentas)
+		└── cam.py
+```
 
 ## Explicação dos módulos eletrônico
 
