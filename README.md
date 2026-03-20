@@ -81,13 +81,13 @@ Os principais objetivos do projeto são:
 
 Para obter mais informações sobre o projeto, clique no [**link**](https://github.com/AdeniltonR/Detector-Dracco/tree/main/Config-ambiente) a seguir.
 
-![orange-pi-os.png](Docs/orange-pi-os.png)
+![Imagens.png](Docs/Imagens.png)
 
 ### Orange Pi
 
 Para obter mais informações sobre o projeto do Software, clique no [**link**](https://github.com/AdeniltonR/Detector-Dracco/tree/main/Software) a seguir.
 
-`[Adicionar uma foto ou Gif]`
+![orange-pi-os.png](Docs/orange-pi-os.png)
 
 ### ESP32-CAM
 

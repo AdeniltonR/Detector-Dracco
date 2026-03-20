@@ -197,6 +197,8 @@ http://192.168.15.30
 
 [**Documentação ESP-IDF**](https://docs.espressif.com/projects/esp-idf/en/v5.4.0/esp32s3/index.html)
 
+[**Guia de pinagem do ESP32-CAM AI-Thinker: Uso dos GPIOs explicado**](https://randomnerdtutorials.com/esp32-cam-ai-thinker-pinout/)
+
 [**Servidor Web de Transmissão ao Vivo ESP32-CAM ESP-IDF**](https://esp32tutorials.com/esp32-cam-esp-idf-live-streaming-web-server/)
 
 [**FreeRTOS**](https://www.freertos.org/)
@@ -204,9 +206,9 @@ http://192.168.15.30
 ## Pinos do projeto eletrônico
 
 | **Pino** | **Conexão** | **Tipo** | **Descrição** |
-| --- | --- | --- | --- |
-| GPIO1 | TX (UART) | UART | Transmissão |
-| GPIO3 | RX (UART) | UART | Recepção |
+|----------|-------------|----------|---------------|
+| GPIO1    | TX (UART)   | UART     | Transmissão   |
+| GPIO3    | RX (UART)   | UART     | Recepção      |
 
 ![ESP32-CAM.png](Docs/ESP32-CAM.png)
 
