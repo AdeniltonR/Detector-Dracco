@@ -91,6 +91,6 @@ Para obter mais informações sobre o projeto do Software, clique no [**link**](
 
 ### ESP32-CAM
 
-Para obter mais informações sobre o projeto do Software, clique no [**link**](https://github.com/AdeniltonR/Detector-Dracco/tree/main/Firmware/esp32_cam) a seguir.
+Para obter mais informações sobre o projeto do Firmware, clique no [**link**](https://github.com/AdeniltonR/Detector-Dracco/tree/main/Firmware/esp32_cam) a seguir.
 
 ![ESP32-CAM.png](Docs/ESP32-CAM.png)
